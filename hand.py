@@ -106,7 +106,7 @@ class Hand():
             value_dump.append(card.value)
             suit_dump.append(card.suit)
 
-        # Now we need toself search the hand for the patterns
+        # Now we need to search the hand for the patterns
         for card in self.cards:
             print("Checking for cards with the value %s" % card.value)
             print(value_dump.count(card.value))
