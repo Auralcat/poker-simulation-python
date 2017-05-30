@@ -81,13 +81,6 @@ class Hand():
             if state:
                 print("This hand's type is %s" % hand)
 
-    def _get_card_count(self):
-        """Returns a list with numbers representing the amount of times
-           each card has appeared in the hand."""
-
-
-
-<<<<<<< HEAD
     def evaluate(self):
          """Checks what kind of hand it is and returns a string with
             its name and value when applicable."""
@@ -120,51 +113,6 @@ class Hand():
                  self.hand_types["4 of a Kind"] = True
              else:
                  self.hand_types["Full House"] = True
-=======
-        # Now we need to search the hand for the patterns
-        for card in self.cards:
-            print("Checking for cards with the value %s" % card.value)
-            print(value_dump.count(card.value))
-            # If there's two cards with the same value, it's a pair.
-            if value_dump.count(card.value) == 2:
-                self.hand_types["One Pair"] = True
-
-            # If there's one more pair, you have... two pairs!
-            if value_dump.count(card.value) == 2 and self.hand_types["One Pair"]:
-                self._nullify_hand()
-                self.hand_types["Two Pairs"] = True
-
-            # For three cards of the same value in the hand, it's 3 of a kind
-            if value_dump.count(card.value) == 3:
-                self._nullify_hand()
-                self.hand_types["3 of a Kind"] = True
-
-            # When you have consecutive cards (e.g.: 2 to 6), it's a straight
-
-            # If all cards in the hand have the same suit, it's a flush
-            if suit_dump.count(card.suit) == len(self.cards):
-                self.hand_types["Flush"] = True
-
-            # If there's one pair and three of a kind, it's a full house
-            if self.hand_types["One Pair"] and self.hand_types["3 of a Kind"]:
-                self._nullify_hand()
-                self.hand_types["Full House"] = True
-
-            # If there are 4 cards with the same value, it's 4 of a kind
-            if value_dump.count(card.value) == 4:
-                self._nullify_hand()
-                self.hand_types["4 of a Kind"] = True
-
-            # If there's a straight and a flush, it's a straight flush
-            if self.hand_types["Straight"] and self.hand_types["Flush"]:
-                self._nullify_hand()
-                self.hand_types["Straight Flush"] = True
-
-        # If there's no pattern, it's a high card
-        buf = functools.reduce(lambda x,y: x and y, self.hand_types.values())
-        if not buf:
-            self.hand_types["High Card"] = True
->>>>>>> f2e16a34eef69b7c553ee1dd132970dda50282d3
 
 # Creating a deck
 deck = [Card(value, suit) for value in CARD_VALUES for suit in CARD_SUITS]
