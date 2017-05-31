@@ -18,7 +18,6 @@
 
 import random
 import os
-import functools
 
 # These are the global variables used by the module:
 CARD_VALUES = list(range(2, 11)) + ["J", "Q", "K", "A"]
@@ -101,7 +100,10 @@ class Hand():
         # And there's the possibility of having a straight, Ace to Five:
         possible_straights.append(["A", 2, 3, 4, 5])
 
+        # Going through the check
         for straight in possible_straights:
+            # Things work best when you use a count to record the matches
+            # for a straight
             straight_count = 0
             for value in self.value_list:
                 if value in straight:
@@ -115,57 +117,57 @@ class Hand():
         return has_straight
 
     def evaluate(self):
-         """Checks what kind of hand it is and returns a string with
-            its name and value when applicable."""
+        """Checks what kind of hand it is and returns a string with
+           its name and value when applicable."""
 
-         # We're going to check the values of the cards using that value set
-         # from earlier!
-         # We'll also need to get a count list of the values in the hand:
-         buf_list = [card.value for card in self.cards]
-         count_list = [buf_list.count(card.value) for card in self.cards]
+        # We're going to check the values of the cards using that value set
+        # from earlier!
+        # We'll also need to get a count list of the values in the hand:
+        buf_list = [card.value for card in self.cards]
+        count_list = [buf_list.count(card.value) for card in self.cards]
 
-         # If the value set has a length of 5, you can have either a
-         # High Card, Straight, Flush or Straight Flush
-         if len(self.value_list) == 5:
-             # Checking for a flush is quite straightforward
-             # (no pun intended)
-             if len(self.suit_list) == 1:
-                 self.hand_types["Flush"] = True
+        # If the value set has a length of 5, you can have either a
+        # High Card, Straight, Flush or Straight Flush
+        if len(self.value_list) == 5:
+            # Checking for a flush is quite straightforward
+            # (no pun intended)
+            if len(self.suit_list) == 1:
+                self.hand_types["Flush"] = True
 
-             # Checking for a straight:
-             if self._check_for_straight():
-                 self.hand_types["Straight"] = True
+            # Checking for a straight:
+            if self._check_for_straight():
+                self.hand_types["Straight"] = True
 
-             # If there's both a straight and a flush,
-             # it's a Straight Flush:
-             if self.hand_types["Straight"] and self.hand_types["Flush"]:
-                 self.hand_types["Straight"] = False
-                 self.hand_types["Flush"] = False
-                 self.hand_types["Straight Flush"] = True
+            # If there's both a straight and a flush,
+            # it's a Straight Flush:
+            if self.hand_types["Straight"] and self.hand_types["Flush"]:
+                self.hand_types["Straight"] = False
+                self.hand_types["Flush"] = False
+                self.hand_types["Straight Flush"] = True
 
-             # If no condition has been met, it's a High Card:
-             if not self.hand_types["Flush"] \
-             and not self.hand_types["Straight"] \
-             and not self.hand_types["Straight Flush"]:
+            # If no condition has been met, it's a High Card:
+            if not self.hand_types["Flush"] \
+            and not self.hand_types["Straight"] \
+            and not self.hand_types["Straight Flush"]:
                 self.hand_types["High Card"] = True
 
-         # For a length of 4, the only possibility is One Pair!
-         if len(self.value_list) == 4:
-             self.hand_types["One Pair"] = True
+        # For a length of 4, the only possibility is One Pair!
+        if len(self.value_list) == 4:
+            self.hand_types["One Pair"] = True
 
-         # For a length of 3, it can be either a Two Pair or 3 of a Kind
-         if len(self.value_list) == 3:
-             if 3 in count_list:
-                 self.hand_types["3 of a Kind"] = True
-             else:
-                 self.hand_types["Two Pair"] = True
+        # For a length of 3, it can be either a Two Pair or 3 of a Kind
+        if len(self.value_list) == 3:
+            if 3 in count_list:
+                self.hand_types["3 of a Kind"] = True
+            else:
+                self.hand_types["Two Pair"] = True
 
-         # For a length of 2, it can be either a Full House or 4 of a Kind
-         if len(self.value_list) == 2:
-             if 4 in count_list:
-                 self.hand_types["4 of a Kind"] = True
-             else:
-                 self.hand_types["Full House"] = True
+        # For a length of 2, it can be either a Full House or 4 of a Kind
+        if len(self.value_list) == 2:
+            if 4 in count_list:
+                self.hand_types["4 of a Kind"] = True
+            else:
+                self.hand_types["Full House"] = True
 
 # Creating a deck
 deck = [Card(value, suit) for value in CARD_VALUES for suit in CARD_SUITS]
@@ -178,3 +180,4 @@ for i in range(200):
     print("Hand %s" % i)
     h._generate()
     h.show_hand()
+
