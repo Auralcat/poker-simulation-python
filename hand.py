@@ -95,7 +95,8 @@ class Hand():
 
         # We'll need to generate a space for straights to be recognized:
         card_values_len = len(CARD_VALUES) - 4
-        possible_straights = [CARD_VALUES[i:i+5] for i in range(0, card_values_len)]
+        possible_straights = [CARD_VALUES[i:i+5] \
+                for i in range(0, card_values_len)]
 
         # And there's the possibility of having a straight, Ace to Five:
         possible_straights.append(["A", 2, 3, 4, 5])
@@ -180,4 +181,3 @@ for i in range(200):
     print("Hand %s" % i)
     h._generate()
     h.show_hand()
-
