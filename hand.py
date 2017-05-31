@@ -26,6 +26,7 @@ CARD_SUITS = ["H", "S", "C", "D"]
 HAND_NAMES = ["High Card", "One Pair", "Two Pairs", "Three of a Kind",
               "Straight", "Flush", "Full House", "Four of a Kind",
               "Straight Flush"]
+CARD_ORDER = dict(zip(CARD_VALUES, range(1,14)))
 
 class Card():
     """A card has the attributes value and suit."""
@@ -85,10 +86,18 @@ class Hand():
          """Checks what kind of hand it is and returns a string with
             its name and value when applicable."""
 
-         # We're going to check the values of the cards using that value set from earlier!
+         # We're going to check the values of the cards using that value set
+         # from earlier!
          # We'll also need to get a count list of the values in the hand:
          buf_list = [card.value for card in self.cards]
          count_list = [buf_list.count(card.value) for card in self.cards]
+
+         # We'll also need to generate a space for straights to be recognized:
+         possible_straights = set([CARD_VALUES[i: i+5]
+                               for i in range(0, len(CARD_VALUES) - 4)])
+
+         # And there's the possibility of having a straight, Ace to Five:
+         possible_straights.add(["A", 2, 3, 4, 5])
 
          # If the value set has a length of 5, you can have either a
          # High Card, Straight, Flush or Straight Flush
