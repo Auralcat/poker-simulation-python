@@ -63,6 +63,14 @@ class Hand():
         # IDEA: cast the lists into sets for evaluation.
         self.value_list = set([card.value for card in self.cards])
         self.suit_list = set([card.suit for card in self.cards])
+
+    def _generate_set_hand(self, card_list):
+        """Generates a hand with the given cards."""
+        for card in card_list:
+            self.cards.append(card)
+
+        self._generate_card_data_list()
+
     def _generate(self):
         """Generates a random hand with 5 cards."""
         # Seeding
@@ -82,6 +90,30 @@ class Hand():
             if state:
                 print("This hand's type is %s" % hand)
 
+    def _check_for_straight(self):
+        """Returns a boolean variable stating if the hand is a
+           straight or not."""
+
+        # We'll need to generate a space for straights to be recognized:
+        card_values_len = len(CARD_VALUES) - 4
+        possible_straights = [CARD_VALUES[i:i+5] for i in range(0, card_values_len)]
+
+        # And there's the possibility of having a straight, Ace to Five:
+        possible_straights.append(["A", 2, 3, 4, 5])
+
+        for straight in possible_straights:
+            straight_count = 0
+            for value in self.value_list:
+                if value in straight:
+                    straight_count += 1
+
+            if straight_count == 5:
+                return True
+            else:
+                has_straight = False
+
+        return has_straight
+
     def evaluate(self):
          """Checks what kind of hand it is and returns a string with
             its name and value when applicable."""
@@ -92,18 +124,30 @@ class Hand():
          buf_list = [card.value for card in self.cards]
          count_list = [buf_list.count(card.value) for card in self.cards]
 
-         # We'll also need to generate a space for straights to be recognized:
-         possible_straights = set([CARD_VALUES[i: i+5]
-                               for i in range(0, len(CARD_VALUES) - 4)])
-
-         # And there's the possibility of having a straight, Ace to Five:
-         possible_straights.add(["A", 2, 3, 4, 5])
-
          # If the value set has a length of 5, you can have either a
          # High Card, Straight, Flush or Straight Flush
          if len(self.value_list) == 5:
+             # Checking for a flush is quite straightforward
+             # (no pun intended)
              if len(self.suit_list) == 1:
                  self.hand_types["Flush"] = True
+
+             # Checking for a straight:
+             if self._check_for_straight():
+                 self.hand_types["Straight"] = True
+
+             # If there's both a straight and a flush,
+             # it's a Straight Flush:
+             if self.hand_types["Straight"] and self.hand_types["Flush"]:
+                 self.hand_types["Straight"] = False
+                 self.hand_types["Flush"] = False
+                 self.hand_types["Straight Flush"] = True
+
+             # If no condition has been met, it's a High Card:
+             if not self.hand_types["Flush"] \
+             and not self.hand_types["Straight"] \
+             and not self.hand_types["Straight Flush"]:
+                self.hand_types["High Card"] = True
 
          # For a length of 4, the only possibility is One Pair!
          if len(self.value_list) == 4:
