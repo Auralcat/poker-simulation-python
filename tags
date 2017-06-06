@@ -1,0 +1,11 @@
+Card	hand.py	/^class Card():$/
+Hand	hand.py	/^class Hand():$/
+__init__	hand.py	/^    def __init__(self, value, suit):$/
+__init__	hand.py	/^    def __init__(self):$/
+_check_for_straight	hand.py	/^    def _check_for_straight(self):$/
+_generate	hand.py	/^    def _generate(self):$/
+_generate_card_data_list	hand.py	/^    def _generate_card_data_list(self):$/
+_generate_set_hand	hand.py	/^    def _generate_set_hand(self, card_list):$/
+evaluate	hand.py	/^    def evaluate(self):$/
+name	hand.py	/^    def name(self):$/
+show_hand	hand.py	/^    def show_hand(self):$/
