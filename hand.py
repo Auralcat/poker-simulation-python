@@ -33,6 +33,10 @@ class Card():
         self.value = value
         self.suit = suit
 
+    def __eq__(self, other_card):
+        """Allows direct card comparison"""
+        return self.suit == other_card.suit and self.value == other_card.value
+
     @property
     def name(self):
 
@@ -75,8 +79,11 @@ class Hand():
         # Seeding
         random.seed(os.urandom(random.randint(1, 1000)))
         while len(self.cards) != 5:
-            self.cards.append(Card(random.choice(CARD_VALUES),
-                                   random.choice(CARD_SUITS)))
+            new_card = Card(random.choice(CARD_VALUES),
+                            random.choice(CARD_SUITS))
+            # Solving the duplicated card problem. __eq__ is necessary.
+            if new_card not in self.cards:
+                self.cards.append(new_card)
         self._generate_card_data_list()
     def show_hand(self):
         """Prints all the cards in the hand"""
